@@ -1,9 +1,7 @@
-#[derive(Copy, Clone)]
-pub struct Vertex {
-    position: (f32, f32, f32)
-}
+use crate::models::object::Vertex as Vertex;
+use crate::models::object::Normal as Normal;
 
-implement_vertex!(Vertex, position);
+use super::object::Object;
 
 const SIZE: f32 = 30.0;
 
@@ -17,13 +15,6 @@ pub const VERTICES: [Vertex; 8] = [
     Vertex { position: (-SIZE, -SIZE,  SIZE) },
     Vertex { position: (-SIZE, -SIZE, -SIZE) },
 ];
-
-#[derive(Copy, Clone)]
-pub struct Normal {
-    normal: (f32, f32, f32)
-}
-
-implement_vertex!(Normal, normal);
 
 pub const NORMALS: [Normal; 12] = [
     Normal { normal: ( 0.0,  0.0,  1.0) },
@@ -54,3 +45,11 @@ pub const INDICES: [u16; 3*12] = [
     1, 3, 5,
     3, 5, 7,
 ];
+
+pub fn new() -> Object {
+    Object::new(
+        VERTICES.to_vec(),
+        NORMALS.to_vec(),
+        INDICES.to_vec()
+    )
+}
