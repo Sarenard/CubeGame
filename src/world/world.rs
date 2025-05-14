@@ -47,7 +47,8 @@ const FRAGMENT_SHADER_SRC: &str = r#"
 
 impl World {
     pub fn new(display: Display<WindowSurface>, window: Window) -> World {
-        let cube = cube::new();
+        let cube1 = cube::new([0., 0., 0.]);
+        let cube2 = cube::new([100., 0., 0.]);
         
         World {
             camera: Camera::new(),
@@ -55,7 +56,7 @@ impl World {
                 None).unwrap(),
             display: display,
             window: window,
-            objects: vec![cube],
+            objects: vec![cube1, cube2],
         }
     }
 

@@ -5,16 +5,18 @@ use super::object::Object;
 
 const SIZE: f32 = 30.0;
 
-pub const VERTICES: [Vertex; 8] = [
-    Vertex { position: ( SIZE,  SIZE,  SIZE) },
-    Vertex { position: ( SIZE,  SIZE, -SIZE) },
-    Vertex { position: ( SIZE, -SIZE,  SIZE) },
-    Vertex { position: ( SIZE, -SIZE, -SIZE) },
-    Vertex { position: (-SIZE,  SIZE,  SIZE) },
-    Vertex { position: (-SIZE,  SIZE, -SIZE) },
-    Vertex { position: (-SIZE, -SIZE,  SIZE) },
-    Vertex { position: (-SIZE, -SIZE, -SIZE) },
-];
+fn vertices(pos: [f32; 3]) -> [Vertex; 8] {
+    [
+        Vertex { position: ( SIZE+pos[0],  SIZE+pos[1],  SIZE+pos[2]) },
+        Vertex { position: ( SIZE+pos[0],  SIZE+pos[1], -SIZE+pos[2]) },
+        Vertex { position: ( SIZE+pos[0], -SIZE+pos[1],  SIZE+pos[2]) },
+        Vertex { position: ( SIZE+pos[0], -SIZE+pos[1], -SIZE+pos[2]) },
+        Vertex { position: (-SIZE+pos[0],  SIZE+pos[1],  SIZE+pos[2]) },
+        Vertex { position: (-SIZE+pos[0],  SIZE+pos[1], -SIZE+pos[2]) },
+        Vertex { position: (-SIZE+pos[0], -SIZE+pos[1],  SIZE+pos[2]) },
+        Vertex { position: (-SIZE+pos[0], -SIZE+pos[1], -SIZE+pos[2]) },
+    ]
+}
 
 pub const NORMALS: [Normal; 12] = [
     Normal { normal: ( 0.0,  0.0,  1.0) },
@@ -46,9 +48,9 @@ pub const INDICES: [u16; 3*12] = [
     3, 5, 7,
 ];
 
-pub fn new() -> Object {
+pub fn new(pos: [f32; 3]) -> Object {
     Object::new(
-        VERTICES.to_vec(),
+        vertices(pos).to_vec(),
         NORMALS.to_vec(),
         INDICES.to_vec()
     )
