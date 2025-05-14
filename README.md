@@ -1,2 +1,2 @@
 # CubeGame
-3d motor engine with rust
+A rust 3d game

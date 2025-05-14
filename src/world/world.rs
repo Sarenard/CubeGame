@@ -21,29 +21,29 @@ pub struct World {
 }
 
 const VERTEX_SHADER_SRC: &str = r#"
-        #version 140
+    #version 140
 
-        in vec3 position;
+    in vec3 position;
 
-        uniform mat4 perspective;
-        uniform mat4 view;
-        uniform mat4 model;
+    uniform mat4 perspective;
+    uniform mat4 view;
+    uniform mat4 model;
 
-        void main() {
-            mat4 modelview = view * model;
-            gl_Position = perspective * modelview * vec4(position, 1.0);
-        }
-    "#;
+    void main() {
+        mat4 modelview = view * model;
+        gl_Position = perspective * modelview * vec4(position, 1.0);
+    }
+"#;
 
 const FRAGMENT_SHADER_SRC: &str = r#"
-        #version 140
+    #version 140
 
-        out vec4 color;
+    out vec4 color;
 
-        void main() {
-            color = vec4(1.0, 0.0, 0.0, 1.0);
-        }
-    "#;
+    void main() {
+        color = vec4(1.0, 0.0, 0.0, 1.0);
+    }
+"#;
 
 impl World {
     pub fn new(display: Display<WindowSurface>, window: Window) -> World {
