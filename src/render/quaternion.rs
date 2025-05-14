@@ -1,6 +1,6 @@
 use std::ops::Mul;
 
-use crate::render::vec3d::Vec3d as Vec3d;
+use crate::render::vec3d::Vec3d;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Quaternion {

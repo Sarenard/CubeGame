@@ -1,5 +1,5 @@
-use crate::models::object::Vertex as Vertex;
-use crate::models::object::Normal as Normal;
+use crate::models::object::Vertex;
+use crate::models::object::Normal;
 
 use super::object::Object;
 

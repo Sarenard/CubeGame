@@ -1,6 +1,6 @@
 use std::ops::Neg;
 
-use crate::render::quaternion::Quaternion as Quaternion;
+use crate::render::quaternion::Quaternion;
 
 #[derive(Debug, Clone, Copy)]
 pub struct Vec3d {

@@ -5,7 +5,7 @@ mod models;
 mod render;
 mod world;
 
-use world::world::World as World;
+use world::world::World;
 
 fn main() {
     let event_loop = glium::winit::event_loop::EventLoop::builder()

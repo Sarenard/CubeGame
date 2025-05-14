@@ -1,4 +1,4 @@
-use crate::render::quaternion::Quaternion as Quaternion;
+use crate::render::quaternion::Quaternion;
 
 use super::vec3d::Vec3d;
 

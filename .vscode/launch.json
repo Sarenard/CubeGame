@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/sarenard/Documents/Programmation/cubegame",
-      "program": "/home/sarenard/Documents/Programmation/cubegame/build/Debug/outDebug",
+      "cwd": "/home/sarenard/Documents/GitHub/CubeGame",
+      "program": "/home/sarenard/Documents/GitHub/CubeGame/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
