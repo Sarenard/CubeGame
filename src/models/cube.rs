@@ -3,7 +3,7 @@ use crate::models::object::Normal;
 
 use super::object::Object;
 
-const SIZE: f32 = 10.0;
+pub const SIZE: f32 = 10.0;
 
 fn vertices(pos: [f32; 3]) -> [Vertex; 8] {
     [

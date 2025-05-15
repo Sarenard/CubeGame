@@ -12,7 +12,7 @@ pub struct Normal {
 
 implement_vertex!(Normal, normal);
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Object {
     pub vertices: Vec<Vertex>,
     #[allow(unused)]

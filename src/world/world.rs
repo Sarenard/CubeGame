@@ -1,6 +1,7 @@
 use glium::winit::event::Event;
 use glium::winit::event_loop::ActiveEventLoop;
 use glium::winit::window::Window;
+use glium::{draw_parameters, DrawParameters};
 use glium::{glutin::surface::WindowSurface, Display};
 
 use crate::models::cube;
@@ -12,12 +13,12 @@ use crate::render::vec3d::Vec3d;
 
 use glium::winit::{event::{DeviceEvent, ElementState, RawKeyEvent}, keyboard::{KeyCode, PhysicalKey}};
 
+use super::map::Map;
 pub struct World {
     pub camera: Camera,
-    program: glium::Program,
     display: Display<WindowSurface>,
     window: Window,
-    objects: Vec<Object>
+    map: Map
 }
 
 const VERTEX_SHADER_SRC: &str = r#"
@@ -35,7 +36,7 @@ const VERTEX_SHADER_SRC: &str = r#"
     }
 "#;
 
-const FRAGMENT_SHADER_SRC: &str = r#"
+const RED_FRAGMENT_SHADER_SRC: &str = r#"
     #version 140
 
     out vec4 color;
@@ -45,18 +46,24 @@ const FRAGMENT_SHADER_SRC: &str = r#"
     }
 "#;
 
+const GREEN_FRAGMENT_SHADER_SRC: &str = r#"
+    #version 140
+
+    out vec4 color;
+
+    void main() {
+        color = vec4(0.0, 1.0, 0.0, 1.0);
+    }
+"#;
+
 impl World {
     pub fn new(display: Display<WindowSurface>, window: Window) -> World {
-        let cube1 = cube::new([0., 0., 0.]);
-        let cube2 = cube::new([100., 0., 0.]);
         
         World {
             camera: Camera::new(),
-            program: glium::Program::from_source(&display, VERTEX_SHADER_SRC, FRAGMENT_SHADER_SRC,
-                None).unwrap(),
             display: display,
             window: window,
-            objects: vec![cube1, cube2],
+            map: Map::new(),
         }
     }
 
@@ -99,14 +106,35 @@ impl World {
             [0.0, 0.0, 2.0, 1.0f32]
         ];
 
-        for elt in &self.objects {
-            let positions = glium::VertexBuffer::new(&self.display, &elt.vertices).unwrap();
-            let indices = glium::IndexBuffer::new(&self.display, glium::index::PrimitiveType::TrianglesList,
-                                                &elt.indices).unwrap();
-            
-            target.draw(&positions, &indices, &self.program, 
-                &uniform! { model: model, view: self.camera.render(), perspective: perspective },
-            &params).unwrap();
+        let red_program = glium::Program::from_source(&self.display, VERTEX_SHADER_SRC, RED_FRAGMENT_SHADER_SRC, None).unwrap();
+        let green_program = glium::Program::from_source(&self.display, VERTEX_SHADER_SRC, GREEN_FRAGMENT_SHADER_SRC, None).unwrap();
+
+        for chunk in &self.map.chunks {
+            let to_show = chunk.get_show();
+            for obj in to_show {
+                let positions = glium::VertexBuffer::new(&self.display, &obj.vertices).unwrap();
+                let indices = glium::IndexBuffer::new(&self.display, glium::index::PrimitiveType::TrianglesList,
+                                                    &obj.indices).unwrap();
+                
+                target.draw(&positions, &indices, &red_program, 
+                    &uniform! { model: model, view: self.camera.render(), perspective: perspective },
+                &params).unwrap();
+
+                let params_wireframe = DrawParameters {
+                    depth: glium::Depth {
+                        test: glium::draw_parameters::DepthTest::IfLess,
+                        write: true,
+                        .. Default::default()
+                    },
+                    polygon_mode: draw_parameters::PolygonMode::Line,  // Mode wireframe pour dessiner les bords
+                    line_width: Some(1.0),
+                    ..Default::default()
+                };
+
+                target.draw(&positions, &indices, &green_program, 
+                    &uniform! { model: model, view: self.camera.render(), perspective: perspective },
+                &params_wireframe).unwrap();
+            }
         }
 
         target.finish().unwrap();
